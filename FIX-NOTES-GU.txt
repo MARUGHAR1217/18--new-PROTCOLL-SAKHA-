@@ -1,0 +1,37 @@
+PROTOCOL SAKHA — APK / PDF / SAVE-SHARE WORK NOTES
+
+Applied source/workflow changes:
+1. APK workflow bundles html2canvas and jsPDF locally; PDF generation no longer relies solely on an internet CDN.
+2. APK workflow bundles official Capacitor Filesystem, Share, and App JavaScript plugin proxies.
+3. Capacitor bridge and plugin scripts are loaded before the app's later scripts.
+4. Gujarati font files are copied into the Android web assets and the APK's font paths are adjusted, so the font does not depend on files outside Capacitor's webDir.
+5. Native PDF export writes to Documents/PROTOCOL-SAKHA/Exports and then opens Android's share sheet.
+6. Native blob-download links use Capacitor Filesystem/Share; backup-like downloads are written to Documents/PROTOCOL-SAKHA/Backups before sharing.
+7. The original www/index.html layout and content have been preserved except for export plumbing and the workflow-specific font path adjustment.
+
+Static validation completed:
+- APK and EXE workflow YAML parsed successfully.
+- Inline JavaScript syntax checks passed.
+- native-shim.js and native-plugins-entry.js syntax checks passed.
+
+Not yet verified:
+- A real APK build from GitHub Actions.
+- PDF output, Android file saving/sharing, Station Demand and Rotation exports on a physical phone.
+- Data migration/restore across reinstall or between devices.
+
+Important:
+- Do not uninstall the currently working app or clear its storage before taking and checking a backup.
+- The ZIP contains the existing signing keystore so the workflow can sign with the same key. Do NOT commit this keystore or its password to a public GitHub repository. Use a private repository and protect the signing key; for a public repository, move signing to GitHub Actions secrets before uploading the source.
+
+Additional rotation / route-point fixes (2026-10-16):
+8. Employee identity keys now normalize Gujarati/English digits and phone/buckle formatting so the same staff member is not selected twice under different key formats.
+9. Automatic board rotation deduplicates employee identities and applies normalized identities to existing duty logs and already-used allocations.
+10. Point-duty allocation uses stable employee identities (not JavaScript object references) when excluding staff already assigned to another point.
+11. Route-point allocation now displays points grouped by jurisdiction, with the selected station/sector first and return points in a separate section.
+12. Each outbound point has an editable named return-point field (for example, “હરિમંદિર” for the return point). The return-point map is saved locally and the return points appear as separate named allocation rows.
+13. Existing point jurisdiction metadata is used to label and group route points, and selected return-route points are paired in order; extra return-route points remain visible after the paired points.
+
+Validation after these changes:
+- All inline JavaScript blocks in www/index.html passed Node.js syntax checks.
+- main.js, preload.js, www/native-shim.js, and native-plugins-entry.js passed Node.js syntax checks.
+- Functional testing on the user's actual phone and a new APK build are still required; do not treat these as physically device-verified until installed and tested.
