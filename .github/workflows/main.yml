@@ -1,0 +1,22 @@
+name: Build PROTOCOL SAKHA APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check repository files
+        run: |
+          echo "Repository files:"
+          ls -la
+          echo "Workflow directory:"
+          ls -la .github/workflows
+          for f in package.json index.html main.js capacitor.config.json; do
+            test -f "$f" && echo "FOUND: $f" || echo "MISSING: $f"
+          done
+          for d in www assets; do
+            test -d "$d" && echo "FOUND folder: $d" || echo "MISSING folder: $d"
+          done
